@@ -1,0 +1,3 @@
+[submodule "geoscript-js"]
+	path = geoscript-js
+	url = git://github.com/tschaub/geoscript-js.git
