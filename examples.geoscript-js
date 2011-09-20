@@ -1,0 +1,28 @@
+// Example file.
+
+// Modules needed
+var geom = require("geoscript/geom");
+var projection = require("geoscript/proj").Projection;
+
+// Example 1
+var p1 = new geom.Point([0, 0]);
+var p2 = new geom.Point([10, 20]);
+
+print(p1.distance(p2));
+
+var poly = p2.buffer(23);
+
+print(poly.contains(p1));
+
+// Example 2
+var src = new projection("epsg:4326");
+var point = new geom.Point([-111, 45.7]);
+point.projection = src;
+// Transfrom
+point.transform("epsg:26912");
+
+print(point);
+
+
+// And we're done.
+quit()
