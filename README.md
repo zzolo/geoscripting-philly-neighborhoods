@@ -7,3 +7,4 @@ Some basic geo-scripting to convert Philly neighborhoods.
 3. `git submodule update`
 4. `cd geoscript-js`
 5. `mvn install`
+6. To run: `./geoscript-js/bin/geoscript philly-convert.geoscript-js`

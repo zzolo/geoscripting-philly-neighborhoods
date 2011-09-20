@@ -33,10 +33,9 @@ var proj4326 = new Projection('epsg:4326');
 neighborhoodsShp.features.forEach(function(feature) {
   var transformed = Proj.transform(feature.geometry.centroid, proj2271, proj4326);
 
+  print(feature.get('NAME'));
   print(transformed);
 });
-
-
 
 // End execution
 quit();
