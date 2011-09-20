@@ -1,0 +1,42 @@
+/**
+ * File for converting Philly neighborhoods.
+ * 
+ * EPSG: 2272 => EPSG: 4326
+ */
+
+// Required modules
+var Geom = require('geoscript/Geom');
+var Proj = require('geoscript/proj');
+var Projection = Proj.Projection;
+var Feature = require('geoscript/feature');
+var Layer = require('geoscript/layer');
+
+// Info on layer and workspace.  This is the directory where the
+// shapefile data is, then the layer name, which is the basically
+// the file name without extension.
+var neighborhoodsInfo = {
+  workspace: './data/philly-neighborhoods/Planning_Neighborhoods/',
+  name: 'Planning_Neighborhoods'
+};
+try {
+  var neighborhoodsShp = new Layer.Layer(neighborhoodsInfo);
+}
+catch (err) {
+  print(err);
+}
+
+// Define projections
+var proj2271 = new Projection('epsg:2272');
+var proj4326 = new Projection('epsg:4326');
+
+// Go through each feature, converting the centroid.
+neighborhoodsShp.features.forEach(function(feature) {
+  var transformed = Proj.transform(feature.geometry.centroid, proj2271, proj4326);
+
+  print(transformed);
+});
+
+
+
+// End execution
+quit();

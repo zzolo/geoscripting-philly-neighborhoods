@@ -1,12 +1,15 @@
 // Example file.
 
 // Modules needed
-var geom = require("geoscript/geom");
-var projection = require("geoscript/proj").Projection;
+var Geom = require("geoscript/Geom");
+var Projection = require("geoscript/proj").Projection;
+var Feature = require("geoscript/feature");
+var Layer = require("geoscript/layer");
+
 
 // Example 1
-var p1 = new geom.Point([0, 0]);
-var p2 = new geom.Point([10, 20]);
+var p1 = new Geom.Point([0, 0]);
+var p2 = new Geom.Point([10, 20]);
 
 print(p1.distance(p2));
 
@@ -15,13 +18,35 @@ var poly = p2.buffer(23);
 print(poly.contains(p1));
 
 // Example 2
-var src = new projection("epsg:4326");
-var point = new geom.Point([-111, 45.7]);
+var src = new Projection("epsg:4326");
+var point = new Geom.Point([-111, 45.7]);
 point.projection = src;
 // Transfrom
 point.transform("epsg:26912");
 
 print(point);
+
+
+// Example 3
+
+// The workspace is the directory.  And the name is the shapfefile 
+// layer name (file name without extension)
+var layer_info = {
+  workspace: './data/philly-neighborhoods/Planning_Neighborhoods/',
+  name: 'Planning_Neighborhoods'
+};
+try {
+  var shp = new Layer.Layer(layer_info);
+}
+catch (err) {
+  print(err);
+}
+
+print(shp.schema);
+
+shp.features.forEach(function(feature) {
+  print(feature.geometry.centroid);
+});
 
 
 // And we're done.
