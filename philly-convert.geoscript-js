@@ -39,6 +39,7 @@ var proj4326 = new Projection('epsg:4326');
 
 // Label row
 print('location_id,name,lat,lon,borough,address,city,state');
+print('-1,Citywide,39.9522222,-75.1641667,,,Philadelphia,PA');
 
 // Go through each feature, converting the centroid.
 neighborhoodsShp.features.forEach(function(feature) {
@@ -50,7 +51,7 @@ neighborhoodsShp.features.forEach(function(feature) {
   var coordinate = eval('(' + transformed.json + ')');
   coordinate = coordinate.coordinates;
   
-  print(count + ',' + name + ',' + coordinate[0] + ',' + coordinate[1] + ',,,,');
+  print(count + ',' + name + ',' + coordinate[1] + ',' + coordinate[0] + ',,,,');
 });
 
 // End execution
