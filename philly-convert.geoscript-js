@@ -17,6 +17,7 @@ var Proj = require('geoscript/proj');
 var Projection = Proj.Projection;
 var Feature = require('geoscript/feature');
 var Layer = require('geoscript/layer');
+var count = 0;
 
 // Info on layer and workspace.  This is the directory where the
 // shapefile data is, then the layer name, which is the basically
@@ -33,7 +34,7 @@ catch (err) {
 }
 
 // Define projections
-var proj2271 = new Projection('epsg:2272');
+var proj2272 = new Projection('epsg:2272');
 var proj4326 = new Projection('epsg:4326');
 
 // Label row
@@ -41,13 +42,15 @@ print('location_id,name,lat,lon,borough,address,city,state');
 
 // Go through each feature, converting the centroid.
 neighborhoodsShp.features.forEach(function(feature) {
-  var transformed = Proj.transform(feature.geometry.centroid, proj2271, proj4326);
+  count++;
+  
+  var transformed = Proj.transform(feature.geometry.centroid, proj2272, proj4326);
   var name = feature.get('NAME').toLowerCase().toCapitalize();
   // Sorry ...
   var coordinate = eval('(' + transformed.json + ')');
   coordinate = coordinate.coordinates;
   
-  print(',' + name + ',' + coordinate[0] + ',' + coordinate[1] + ',,,,');
+  print(count + ',' + name + ',' + coordinate[0] + ',' + coordinate[1] + ',,,,');
 });
 
 // End execution
