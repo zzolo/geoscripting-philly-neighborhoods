@@ -4,6 +4,13 @@
  * EPSG: 2272 => EPSG: 4326
  */
 
+/**
+ * Simple string function to do word case.
+ */
+String.prototype.toCapitalize = function() {
+  return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2) { return p1+p2.toUpperCase(); } );
+};
+
 // Required modules
 var Geom = require('geoscript/Geom');
 var Proj = require('geoscript/proj');
@@ -29,12 +36,18 @@ catch (err) {
 var proj2271 = new Projection('epsg:2272');
 var proj4326 = new Projection('epsg:4326');
 
+// Label row
+print('location_id,name,lat,lon,borough,address,city,state');
+
 // Go through each feature, converting the centroid.
 neighborhoodsShp.features.forEach(function(feature) {
   var transformed = Proj.transform(feature.geometry.centroid, proj2271, proj4326);
-
-  print(feature.get('NAME'));
-  print(transformed);
+  var name = feature.get('NAME').toLowerCase().toCapitalize();
+  // Sorry ...
+  var coordinate = eval('(' + transformed.json + ')');
+  coordinate = coordinate.coordinates;
+  
+  print(',' + name + ',' + coordinate[0] + ',' + coordinate[1] + ',,,,');
 });
 
 // End execution
